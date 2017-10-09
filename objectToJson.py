@@ -1,4 +1,5 @@
 import json
+from collections import namedtuple
 
 class BlenderObject:
 	def __init__(self):
@@ -10,6 +11,14 @@ class BlenderObject:
 
 
 bObject = BlenderObject()
+
+# Export as JSON
 bObjectAsJson = json.dumps(bObject.__dict__, indent=4, sort_keys=True)
-print(bObject.name)
-print('Object as JSON:\n' + bObjectAsJson)
+print('Type of bObjectAsJson is = ' + str(type(bObjectAsJson)))
+print('Object as JSON (bObjectAsJson):\n' + bObjectAsJson)
+
+# Import as dictionary
+def _json_object_hook(d): return namedtuple('X', d.keys())(*d.values())
+def json2obj(data): return json.loads(data, object_hook=_json_object_hook)
+x = json2obj(bObjectAsJson)
+print('As a decoded object:',x.name,x.description,x.faces,x.polygons)
