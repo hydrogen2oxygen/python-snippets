@@ -12,12 +12,14 @@ class BlenderObject:
     
 def find_transformation(ob):    
     if ob.type == 'MESH':
+            new_matrix = []
             old_matrix = list(ob.matrix_world)
-            print (ob.name)
-            new_matrix = ''
             for line in old_matrix:
-                new_matrix = new_matrix + str(line[0]) + ' ' +  str(line[1]) + ' ' +  str(line[2]) + ' '
-            print (new_matrix)
+                vector = []
+                vector.append(line[0])
+                vector.append(line[1])
+                vector.append(line[2])
+                new_matrix.append(vector)
             return new_matrix
 
 def create_object(ob, i, bObjectsArray):
@@ -26,7 +28,10 @@ def create_object(ob, i, bObjectsArray):
     
     vert_coords = [(ob.matrix_world * v.co) for v in ob.data.vertices]
     for c in vert_coords:
-        vertex = str(c[0]) + ',' + str(c[1]) + ',' + str(c[2])
+        vertex = []
+        vertex.append(c[0])
+        vertex.append(c[1])
+        vertex.append(c[2])
         bObject.vertices.append(vertex)
 
     poly_coords = [(p.vertices[:]) for p in ob.data.polygons]
@@ -65,3 +70,4 @@ for bObject in bObjectsArray:
     f.close()
     #print('Type of bObjectAsJson is = ' + str(type(bObjectAsJson)))
     #print('Object as JSON (bObjectAsJson):\n' + bObjectAsJson)
+print('Exporting finished!')
